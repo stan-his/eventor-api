@@ -1,0 +1,3 @@
+# Python wrapper for the Eventor API
+
+This package allows for easy interactions with the [Eventor API](https://eventor.orientering.se/api/documentation), using Python. There are some endpoints in the API that isn't supported by this package (yet) and there are also some additional functionallity that allows users to scrape Event data from the Eventor website. Any contribuition to test the current implementation or enhance the functionallity is appreciated.
