@@ -63,6 +63,21 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def get_cls_name(cls_name: str) -> str:
+    """Take a name from Eventor and convert it into a name for the class"""
+    cls_name = cls_name.lower()
+
+    cols = ["grön", "vit", "gul", "orange", "blå"]
+    dists = ["kort", "lång"]
+
+    col = next((c for c in cols if c in cls_name), "")
+    dist = next((d for d in dists if d in cls_name), "")
+    age = "ungdom" if "ung" in cls_name else (
+        "vuxen" if "vux" in cls_name else ""
+    )
+    return f"{col.capitalize()} {dist} {age}".strip()
+
+
 def main() -> None:
     """Main function to download results and calculate scores for Vårcupen 2025.
 
@@ -76,8 +91,6 @@ def main() -> None:
         for org in api.get_all_organizations()
         if any(o in org.name for o in args.organisations)
     ]
-
-    print(ids)
 
     # Find all events that is included in "Vårcupen"
     events = sorted(
@@ -103,7 +116,7 @@ def main() -> None:
         names.append(event.name)
         # Loop over all results in the event
         for event_class in event_results:
-            cls_name = event_class.class_name.replace("  ", " ")
+            cls_name = get_cls_name(event_class.class_name.replace("  ", " "))
             # Collect results for the same person over multiple competitions
             for p_res in event_class.class_result:
                 person = (p_res.person.name, p_res.organisation.name)
